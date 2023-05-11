@@ -42,10 +42,8 @@ public class UserMealsUtil {
             calories += meal.getCalories();
         }
         arrayOfCalories.add(calories);
-
         for (int i = 0, j = 0; i < meals.size(); i++) {
-            int hour = meals.get(i).getDateTime().getHour();
-            if (startTime.getHour() <= hour && hour < endTime.getHour()) {
+            if (TimeUtil.isBetweenHalfOpen(meals.get(i).getDateTime().toLocalTime(), startTime, endTime)) {
                 boolean excess;
                 excess = arrayOfCalories.get(j) > caloriesPerDay;
                 j++;
