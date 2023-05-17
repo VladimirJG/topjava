@@ -31,12 +31,9 @@ public class UserMealsUtil {
         List<UserMealWithExcess> list = new ArrayList<>();
         Map<Integer, Integer> map = new HashMap<>();
         for (UserMeal meal : meals) {
-            map.put(meal.getDateTime().getDayOfMonth(), 0);
-        }
-        for (UserMeal meal : meals) {
             int key = meal.getDateTime().getDayOfMonth();
             int value = meal.getCalories();
-            map.compute(key, (mapKey, mapValue) -> mapValue + value);
+            map.merge(key, map.getOrDefault(key, value), (mapKey, mapValue) -> mapValue + value);
         }
         for (UserMeal meal : meals) {
             if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
