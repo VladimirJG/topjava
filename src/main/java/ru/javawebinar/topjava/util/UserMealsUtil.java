@@ -27,10 +27,13 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
 
-        List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        /*List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
 
-        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));*/
+
+        List<UserMealWithExcess> mealsTo = filteredByCycles2(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        mealsTo.forEach(System.out::println);
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -60,13 +63,13 @@ public class UserMealsUtil {
         Map<LocalDate, Integer> caloriesInDayMap = getCaloriesInDayThroughLambda(meals);
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime))
-                .map(food -> new UserMealWithExcess(food.getDateTime(), food.getDescription(), food.getCalories(),
-                        caloriesInDayMap.get(food.getDateTime().toLocalDate()) > caloriesPerDay)).collect(Collectors.toList());
+                .map(meal -> new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
+                        caloriesInDayMap.get(meal.getDateTime().toLocalDate()) > caloriesPerDay)).collect(Collectors.toList());
     }
 
     private static Map<LocalDate, Integer> getCaloriesInDayThroughLambda(List<UserMeal> meals) {
         return meals.stream()
-                .collect(Collectors.groupingBy(food -> food.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories)));
+                .collect(Collectors.groupingBy(meal -> meal.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories)));
     }
 
     public static List<UserMealWithExcess> filteredByCycles2(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
