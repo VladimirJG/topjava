@@ -21,7 +21,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<h3><a href="<c:out value="${meal.dateTime }"/>">Add Meal</a></h3>
+<h3><a href="edit.jsp">Add Meal</a></h3>
 <table border="1">
     <tr>
         <th>Date</th>
@@ -30,6 +30,7 @@
         <th></th>
         <th></th>
     </tr>
+    <jsp:useBean id="listOfMeals" scope="request" type="java.util.List"/>
     <c:forEach items="${listOfMeals}" var="meal">
         <tr style="color:${meal.excess ? 'red' : 'green'}">
             <td><fmt:parseDate value="${ meal.dateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
@@ -37,7 +38,7 @@
                 <fmt:formatDate pattern="yyyy.MM.dd HH:mm" value="${ parsedDateTime }"/></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><a href="<c:out value="${meal.dateTime }"/>">Update</a></td>
+            <td><a href="<c:out value="edit.jsp"/>">Update</a></td>
             <td><a href="<c:out value="${meal.dateTime }"/>">Delete</a></td>
         </tr>
     </c:forEach>
